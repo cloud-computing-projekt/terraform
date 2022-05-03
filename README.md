@@ -5,4 +5,4 @@ Sollte bis Freitag schaffen
 # ToDo
 Terraform Cloud Account erstellen \
 AWS Account erstellen \
-Create Github Action \
+Create Github Action 
