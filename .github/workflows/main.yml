@@ -79,5 +79,5 @@ jobs:
       continue-on-error: true
       
     - name: Destroy Cluster
-      run: terraform destroy -lock=false
+      run: terraform destroy -lock=false -auto-approve
       
