@@ -74,7 +74,7 @@ jobs:
       run: arkade install openfaas
       continue-on-error: true
       
-    - name: Kubectl
+    - name: Kubectl test
       run: kubectl rollout status -n openfaas deploy/gateway
       continue-on-error: true
       
