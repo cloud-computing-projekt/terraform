@@ -56,9 +56,28 @@ jobs:
       run: terraform plan -no-color
       continue-on-error: true
       
+    - name: Terraform Apply
+      run: terraform apply
+      continue-on-error: true
+      
+    - name: Get kubectl Connection
+      run: gcloud container clusters get-credentials crypto-parser-350713-gke --region europe-west3
+      continue-on-error: true
+      
     - name: Install Arkade
       run: curl -sLS https://get.arkade.dev | sudo sh
     
     - name: Test Arkade
       run: arkade --help
+      
+    - name: Install Openfaas
+      run: arkade install openfaas
+      continue-on-error: true
+      
+    - name: Kubectl
+      run: kubectl rollout status -n openfaas deploy/gateway
+      continue-on-error: true
+      
+    - name: Destroy Cluster
+      run: terraform destroy
       
