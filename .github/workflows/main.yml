@@ -61,7 +61,7 @@ jobs:
       continue-on-error: true
       
     - name: Get kubectl Connection
-      run: gcloud container clusters get-credentials crypto-parser-350713-gke --region europe-west3
+      run: gcloud container clusters get-credentials crypto-parser-350713-gke --region europe-west1
       continue-on-error: true
       
     - name: Install Arkade
