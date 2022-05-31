@@ -49,15 +49,15 @@ jobs:
     
     - name: Terraform Init
       id: init
-      run: terraform init
+      run: terraform init -lock=false
       
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color
+      run: terraform plan -no-color -lock=false
       continue-on-error: true
       
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -lock=false
       continue-on-error: true
       
     - name: Get kubectl Connection
