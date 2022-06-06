@@ -116,9 +116,11 @@ jobs:
       
     - name: Connect to Openfaas
       run: echo -n $PASSWORD | faas-cli login --username admin --password-stdin --gateway http://$GATEWAY_IP:8080
+      continue-on-error: true
     
     - name: Push Test function
       run: faas-cli store deploy 'NodeInfo' --gateway http://$GATEWAY_IP:8080
+      continue-on-error: true
     
     - name: Destroy Cluster
       run: terraform destroy -lock=false -auto-approve
