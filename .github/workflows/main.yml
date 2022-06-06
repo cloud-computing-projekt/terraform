@@ -28,6 +28,9 @@ jobs:
       uses: actions/checkout@v3
     - name: Terraform
       uses: hashicorp/setup-terraform@v2
+      
+    - name: Sleep
+      uses: jakejarvis/wait-action@master
 
     # Configure Workload Identity Federation and generate an access token.
     - id: 'auth'
@@ -46,6 +49,8 @@ jobs:
         
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
+    - name: Test sleep
+      run: sleep 10s
     
     - name: Terraform Init
       id: init
@@ -71,13 +76,50 @@ jobs:
       run: arkade --help
       
     - name: Install Openfaas
-      run: arkade install openfaas
+      run: arkade install openfaas --load-balancer
       continue-on-error: true
       
     - name: Kubectl test
       run: kubectl rollout status -n openfaas deploy/gateway
       continue-on-error: true
       
+    - name: Sleep 2 min
+      run: sleep 120s
+    
+    - name: Get IP
+      run: export GATEWAY_IP=$(kubectl get service gateway-external -n openfaas -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+      continue-on-error: true
+    
+    - name: Test IP
+      run: echo $GATEWAY_IP
+      continue-on-error: true
+      
+    - name: IP to be sure
+      run: sleep 120s
+      continue-on-error: true
+      
+    - name: Get IP to be sure
+      run: export GATEWAY_IP=$(kubectl get service gateway-external -n openfaas -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+      continue-on-error: true
+      
+    - name: Get Password
+      run: export PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
+      continue-on-error: true
+    
+    - name: Test Password
+      run: echo $PASSWORD
+      continue-on-error: true
+    
+    - name: Download open-faas cli
+      run: $ curl -sSL https://cli.openfaas.com | sudo -E sh
+      continue-on-error: true
+      
+    - name: Connect to Openfaas
+      run: echo -n $PASSWORD | faas-cli login --username admin --password-stdin --gateway http://$GATEWAY_IP:8080
+    
+    - name: Push Test function
+      run: faas-cli store deploy 'NodeInfo' --gateway http://$GATEWAY_IP:8080
+    
     - name: Destroy Cluster
       run: terraform destroy -lock=false -auto-approve
       
