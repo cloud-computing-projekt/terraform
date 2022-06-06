@@ -76,10 +76,6 @@ jobs:
       run: arkade install openfaas --load-balancer
       continue-on-error: true
       
-    - name: Kubectl test
-      run: kubectl rollout status -n openfaas deploy/gateway
-      continue-on-error: true
-      
     - name: Sleep 2 min
       run: sleep 120s
     
