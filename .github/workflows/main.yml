@@ -49,8 +49,6 @@ jobs:
         
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
-    - name: Test sleep
-      run: sleep 10s
     
     - name: Terraform Init
       id: init
@@ -111,7 +109,7 @@ jobs:
       continue-on-error: true
     
     - name: Download open-faas cli
-      run: $ curl -sSL https://cli.openfaas.com | sudo -E sh
+      run: curl -sSL https://cli.openfaas.com | sudo -E sh
       continue-on-error: true
       
     - name: Connect to Openfaas
