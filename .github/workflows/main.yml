@@ -83,7 +83,7 @@ jobs:
       run: export GATEWAY_IP=$(kubectl get service gateway-external -n openfaas -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
       continue-on-error: true
     
-    - name: Test IP
+    - name: Test IP test
       run: kubectl get service gateway-external -n openfaas -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
       continue-on-error: true
       
