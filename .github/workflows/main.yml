@@ -84,7 +84,7 @@ jobs:
       continue-on-error: true
     
     - name: Test IP
-      run: echo $GATEWAY_IP
+      run: kubectl get service gateway-external -n openfaas -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
       continue-on-error: true
       
     - name: Sleep 60
@@ -100,7 +100,7 @@ jobs:
       continue-on-error: true
     
     - name: Test Password
-      run: echo $PASSWORD
+      run: kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo
       continue-on-error: true
     
     - name: Download open-faas cli
